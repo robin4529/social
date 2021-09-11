@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'ubuntu';
+    src: url('../fonts/UbuntuCondensed-Regular.ttf')
+  }
+  * {
+    font-family: 'ubuntu';
+  }
+.card{
+  background-color:green
+}
