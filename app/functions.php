@@ -42,5 +42,17 @@
     function formclean(){
         $_POST="";
     }
+    //Files Management system function//
+
+    function move($file){
+       
+        $file_name = time()."_". rand()."_". $file['name'];
+         $file_tmp  = $file ['tmp_name'];
+       $file_size  = $file ['size'];
+
+
+         move_uploaded_file( $file_tmp ,"teams/" . $file_name );
+         return $file_name;
+        }
 
 ?>

@@ -8,3 +8,42 @@
 .card{
   background-color:green
 }
+
+#load {
+  max-width: 250px;
+  display: block;
+}
+.upload{
+  width: 50px;
+  cursor: pointer;
+}
+.team{
+  width: 300px;
+  margin:20px;
+}
+.img{
+  width:270px;
+  height: 270px;
+  border-radius: 50%;
+  display: block;
+  margin: auto;
+}
+.team h3{
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 20px;
+  font-weight: bold;
+}
+.team h5{
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 20px;
+  font-weight: bold;
+  color:rgb(39, 37, 37);
+ }
+ .team p{
+   text-align: center;
+   font-family:'Times New Roman', Times, serif;
+   font-weight: 500px;
+  color:rgb(7, 0, 0);
+ }

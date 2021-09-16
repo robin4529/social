@@ -10,140 +10,75 @@
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
+    
 </head>
 <body>
 <?php
         if(isset ($_POST['add'])){
             $name=$_POST['name'];
-            $email= $_POST ['email'];
-            $cell = $_POST ['cell'];
-            $username = $_POST ['uname'];
-            $Age= $_POST ['Age'];
-            $agree= '';
-           
-            if(isset($_POST['agree'])){
-                $agree= $_POST['agree'];
+            $skill= $_POST ['skill'];
+            $bio= $_POST ['bio'];
+
+            if(empty($name)|| empty($skill)|| empty($bio)){
+                $msg= validate('All fields are Require','warning');
+            }else{
+                $file_name = move($file =$_FILES['photo'], 'teams/');
+
+                    $user_data=[
+                        'name' => $name,
+                        'skill' => $skill,
+                        'bio'   => $bio,
+                        'photo' =>  $file_name
+                    ];
+                    $users =json_encode($user_data);
+
+                    setcookie('users',$users, time() +(60 * 60 * 60 *24 * 365));
+                   
+                $msg= validate('Team Member added successfully','success');
             }
-            $gender= '';
-             if(isset($_POST['gender'])){
-                $gender= $_POST['gender'];
-             }
-             $location= '';
-             if(isset($_POST['location'])){
-                $location=$_POST['location'];
-             }
-               
-            
-           
+            //file Managment System//
+             
 
-            
 
-            $validation_status = true;
+             
 
-           
-            if(empty($name)||empty($email)||empty($cell)||empty($username)|| empty($Age))
-           {
-            $msg[] = validate('All fields are Require');
-            $validation_status = false;
-
-           }if(empty($gender) && $gender!='gender'){
-            $msg[] = validate('Select your gender');
-            $validation_status = false;
-
-           }if(agecheck($Age) ==false){
-
-            $msg[]= validate("You are under Age",'warning');
-            $validation=false;
         }
-           if( filter_var($email, FILTER_VALIDATE_EMAIL) ==false)
-           {
-            $msg[] = validate('Invaild email address','warning');
-            $validation_status =false;
-
-           }if (instemail($email, ['nsu.edu.bd']) ==false)
-           {
-                $msg[] =  validate ('Your isnt Valid Email to sign in');
-                $validation_status = false;
-
-           
-        }if ( $agree!='agree')
-        {
-             $msg[] =  validate ('You should agree first');
-             $validation_status = false;
-
-        }if (empty($location) && $location!='location')
-        {
-             $msg[] =  validate ('select your location');
-             $validation_status = false;
-
-        }if( $validation_status == true){
-               $msg[]= validate('Congraculation youre successfully sign in','success');
-                formclean();
-           }
-        }
-        
-    
-       //form validitation
-        ?>
-<div class="container">
-                <div class="row justify-content-center mt-5">
-                    <div class="col-md-4">
-                        <div class="card">
+            ?>
+           <div class="container-fluid">
+               <div class="row">
+                   <div class="col-md-3">
+                       <div class="shadow">
+                       <div class="card">
                             <div class="card-header">
                                 <h2>Created An account</h2>
                                 <?php
                                     if(isset($msg)){
-                                        foreach($msg as $m){
-                                            echo $m ; }
+                                        echo $msg;
                                     }
                                 ?>
                                </div>
                             <div class="card-body">
-                                <form action="" method="post">
+                                <form action="" method="post" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label for="">Name</label>
-                                        <input  value="<?php old('name') ?>" type="text" class="form-control"  name="name">
+                                        <input value="<?php old('name') ?>" type="text" class="form-control"  name="name">
                                     </div>
+                                    
                                     <div class="form-group">
-                                        <label for="">E-Mail</label>
-                                        <input value="<?php old('email') ?>" type="text" class="form-control" name="email">
+                                        <label for="">skill</label>
+                                        <input value="<?php old('skill') ?>" type="text" class="form-control"  name="skill">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="">Cell</label>
-                                        <input value="<?php old('cell') ?>" type="text" class="form-control"  name="cell">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="">User Name</label>
-                                        <input value="<?php old('uname') ?>" type="text" class="form-control"  name="uname">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="">Age</label>
-                                        <input value="<?php agecheck('Age') ?>" type="text" class="form-control"  name="Age">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="">Gender</label></br>
-                                        <input value="male" type="radio" id="Male" name="gender">
-                                        <label for="male">Male</label>
-                                        <input value="male" type="radio" id="Female" name="gender">
-                                        <label for="female">female</label>
-                                    </div>
-                                        <div class="form-gropu">
-                                            <label for="">Location :</label>
-                                            <select  class="form-control" name="location" id="">
-                                            <option value="">-select-</option>
-                                                <option value="Dhanmondhi">Dhanmondhi</option>
-                                                <option value="Jatrabrai">Jatrabrai</option>
-                                                <option value="Mirpur">Mirpur</option>
-                                                <option value="Mohammadpur">Mohammadpur</option>
-                                            </select>
-                                            <br>
-                                     </div>
                                         <div class="form-group">
-                                            <input name="agree" value="agree" type="checkbox" id="agree">
-                                            <label for="Agree">I agree all of terms & conditon</label>
-
+                                            <label for="">bio</label>
+                                           <textarea value="<?php old('bio') ?>" class="form-control" name="bio" id=""></textarea>
+                                         </div>
+                                        <div class="form-group">
+                                           <img id="load" src="" alt="">
+                                            <input style="display: none;"  name="photo" class="form-control" id="photo" type="file">
+                                            <label for="photo"><img class="upload" src="assets/img/images.png" alt=""></label>
                                         </div>
-                                            <div class="form-group">
+                                        
+                                    <div class="form-group">
                                         <p class="text-center">
                                         <input type="submit" class="btn btn-primary" name="add" value="Sign Up">
                                         </p>
@@ -151,10 +86,26 @@
                                 </form>
                             </div>
                         </div>
+                       </div>
+                    </div>
+                    <div class="col-md-9 ">
+                        <?php 
+                          $all_users =$_COOKIE['users'];
+                                   $data =json_decode( $all_users, false);
+                           
+                        ?>
+                        
+                        <div class="card team">
+                            <div class="card-body">
+                                <img class="img" src="teams/<?php echo $data-> photo; ?>">
+                                <h3><?php echo $data ->name; ?></h3>
+                                <h5><?php echo $data -> skill; ?></h5>
+                                <p><?php echo $data ->bio; ?></p>
+                            </div>
                     </div>
                 </div>
-            </div>
-
+               </div>
+           </div>
                                 </br>
                                 </br>
 
@@ -162,5 +113,6 @@
 <script src="assets/js/jquery-3.2.1.slim.min.js"></script>
 <script src="assets/js/popper.min.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/custom.js"></script>
 </body>
 </html>
